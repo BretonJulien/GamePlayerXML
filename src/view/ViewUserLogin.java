@@ -10,7 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.xml.soap.SOAPException;
 
+import ClientWebService.ClientWebService;
 import controller.ControllerJeu;
 import controller.ControllerMainMenu;
 
@@ -64,26 +66,34 @@ public class ViewUserLogin extends JFrame{
 		 });
 	
 		 login.addActionListener(new ActionListener(){
-		  public void actionPerformed(ActionEvent ae)
-		  {
-		  String un=uname.getText();
-		  String pa=new String(pass.getPassword());
-		  
-		   if((un.equals("juju"))&&(pa.equals("juju")))
-		   {
-			   //On récupère l'instance de la classe user et on lui définit le login du user 
-			   //Qui se connecte
-			   String login = "herbelin.benjamin";
-			   User user = User.getInstance();
-			   user.setLogin(login);
-			   
-			   dispose();
-			   ViewMainMenu vmm = new ViewMainMenu();
-			   ModelMainMenu mmm = new ModelMainMenu();
-			   ControllerMainMenu cmm = new ControllerMainMenu(vmm, mmm);
-		   }
-		  }
-		 });
+              public void actionPerformed(ActionEvent ae)
+              {
+                  String un=uname.getText();
+                  String pa=new String(pass.getPassword());
+
+                  ClientWebService auth = new ClientWebService();
+                  Boolean isAuth = false;
+                  try {
+                      isAuth = auth.login(un, pa);
+                  } catch (SOAPException e) {
+                      e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                  }
+
+                  if(isAuth)
+                  {
+                       //On rï¿½cupï¿½re l'instance de la classe user et on lui dï¿½finit le login du user
+                       //Qui se connecte
+                       String login = un;
+                       User user = User.getInstance();
+                       user.setLogin(login);
+
+                       dispose();
+                       ViewMainMenu vmm = new ViewMainMenu();
+                       ModelMainMenu mmm = new ModelMainMenu();
+                       ControllerMainMenu cmm = new ControllerMainMenu(vmm, mmm);
+                   }
+              }
+         });
 	
 		 KeyAdapter k=new KeyAdapter(){
 		  public void keyPressed(KeyEvent ke)
