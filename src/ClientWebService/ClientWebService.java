@@ -18,7 +18,7 @@ public class ClientWebService {
         SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
         // Send SOAP Message to SOAP Server
-        String url = "http://127.0.0.1:8089/Projet5A/gameGeneratorMVC/ServiceWeb/server.php";
+        String url = "http://127.0.0.1:8089/gameGeneratorMVC/ServiceWeb/server.php";
         SOAPMessage soapResponse = null;
         try {
             soapResponse = soapConnection.call(createSOAPRequest(login, pwd), url);

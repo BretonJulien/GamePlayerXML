@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.xml.soap.SOAPException;
@@ -77,6 +78,8 @@ public class ViewUserLogin extends JFrame{
                       isAuth = auth.login(un, pa);
                   } catch (SOAPException e) {
                       e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                      JOptionPane.showMessageDialog( null, "Serveur inaccessible", 
+            			      "GamePlayerXML", JOptionPane.INFORMATION_MESSAGE);
                   }
 
                   if(isAuth)
@@ -92,6 +95,11 @@ public class ViewUserLogin extends JFrame{
                        ModelMainMenu mmm = new ModelMainMenu();
                        ControllerMainMenu cmm = new ControllerMainMenu(vmm, mmm);
                    }
+                  else
+                  {
+                	  JOptionPane.showMessageDialog( null, "Login et/ou mot de passe incorrects", 
+            			      "GamePlayerXML", JOptionPane.INFORMATION_MESSAGE);
+                  }
               }
          });
 	
