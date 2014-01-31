@@ -1,12 +1,16 @@
 package model;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.xml.transform.OutputKeys;
@@ -29,7 +33,7 @@ public class Jeu {
 	private LinkedHashMap<String, Situation> situations;
 	private Personnage heros;
 	private String pathToGame;
-	
+	private String pathFile;
 
 	public Jeu(String nomJeu, int scoreCourant,  LinkedHashMap<String, Situation> situations, Personnage heros, String pathToGame)
 	{
@@ -38,6 +42,20 @@ public class Jeu {
 		this.situations = situations;
 		this.heros = heros;
 		this.pathToGame = pathToGame;
+		
+		//Chargement du fichier properties pour récupérer le chemin qui pointe vers gameGeneratorMVC
+				Properties prop = new Properties();
+				InputStream input = null;
+				String pathFile = null;
+						
+				try {
+			 		input = new FileInputStream("prop.properties");
+			 		prop.load(input);
+			 		this.pathFile=prop.getProperty("PATH");
+						 
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				}
 	}
 	
 	public String getNomJeu() {
@@ -108,9 +126,9 @@ public class Jeu {
 		
 		String login = User.getInstance().getLogin();
 		
-		String filePath = "C:/xampp/htdocs/gameGeneratorMVC/Content/xml/Members/"+login+"/savedGames.xml";
+		String filePath = pathFile+"gameGeneratorMVC/Content/xml/Members/"+login+"/savedGames.xml";
 		
-		LoadXmlFile lxf = new LoadXmlFile("C:/xampp/htdocs/gameGeneratorMVC/Content/xml/Members/"+login+"/", "savedGames.xml");
+		LoadXmlFile lxf = new LoadXmlFile(pathFile+"gameGeneratorMVC/Content/xml/Members/"+login+"/", "savedGames.xml");
 		
 		//On récupère le noeud root
 		Node saves = lxf.getDoc().getElementsByTagName("saves").item(0);
